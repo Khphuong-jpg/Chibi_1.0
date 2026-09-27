@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+<title>🧸 Tiệm Đóng Gói & Giao Hàng Chibi Cute</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+<script>
+tailwind.config={theme:{extend:{colors:{cream:'#FFF8F0',pinky:'#FFD1DC',mint:'#E8F5E9',butter:'#FFF9C4',lav:'#E6E0F8',ink:'#5B4B5E',peach:'#FFE0C7',sky:'#DCEEFF'},fontFamily:{sans:['Nunito','system-ui','sans-serif']},borderRadius:{'4xl':'2rem','5xl':'2.5rem'}}}}
+</script>
+<style>
+:root{--bg:linear-gradient(160deg,#FFF8F0 0%,#FFE9F2 45%,#EAF6FF 100%);--text:#5B4B5E}
+body{font-family:'Nunito',system-ui,sans-serif;color:var(--text);background:var(--bg);background-attachment:fixed;-webkit-tap-highlight-color:transparent;transition:background .6s,color .4s;overflow-x:hidden}
+body.night{--bg:linear-gradient(160deg,#241F33 0%,#372B47 50%,#1E1B2B 100%);--text:#F0E7FF}
+.card{background:#fff;border-radius:28px;box-shadow:0 10px 25px rgba(0,0,0,.06);transition:background .4s,color .4s,transform .15s cubic-bezier(.34,1.56,.64,1),box-shadow .2s}
+body.night .card{background:rgba(255,255,255,.08);box-shadow:0 10px 25px rgba(0,0,0,.35);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.08)}
+.btn{border-radius:999px;padding:.6rem 1.15rem;font-weight:800;font-size:.9rem;transition:transform .15s cubic-bezier(.34,1.56,.64,1),box-shadow .15s,filter .15s;box-shadow:0 4px 0 rgba(0,0,0,.07);user-select:none;cursor:pointer;border:none;display:inline-flex;align-items:center;gap:.4rem;justify-content:center}
+.btn:hover{transform:scale(1.05) translateY(-2px)}.btn:active{transform:scale(.94)}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none;filter:grayscale(.5);box-shadow:none}
+.btn-primary{background:linear-gradient(135deg,#FFB6C1,#FF9EB5);color:#fff}
+.btn-mint{background:linear-gradient(135deg,#B9E7C4,#8FD9A8);color:#2C5B3C}
+.btn-butter{background:linear-gradient(135deg,#FFE9A3,#FFD966);color:#7A5B00}
+.btn-lav{background:linear-gradient(135deg,#D6CDF5,#BEB0EE);color:#463A75}
+.btn-ghost{background:rgba(255,255,255,.7);color:#5B4B5E}
+body.night .btn-ghost{background:rgba(255,255,255,.12);color:#F0E7FF}
+@keyframes popIn{0%{transform:scale(.6);opacity:0}60%{transform:scale(1.08)}100%{transform:scale(1);opacity:1}}
+@keyframes slideInR{from{transform:translateX(60px);opacity:0}to{transform:translateX(0);opacity:1}}
+@keyframes slideInL{from{transform:translateX(-60px);opacity:0}to{transform:translateX(0);opacity:1}}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+@keyframes wiggle{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(4deg)}}
+@keyframes floatUp{to{transform:translateY(-70px);opacity:0}}
+@keyframes slideAcross{from{transform:translateX(-25vw)}to{transform:translateX(120vw)}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+@keyframes glowPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,182,193,.6)}50%{box-shadow:0 0 0 14px rgba(255,182,193,0)}}
+.anim-pop{animation:popIn .4s cubic-bezier(.34,1.56,.64,1) both}
+.anim-slideR{animation:slideInR .45s cubic-bezier(.34,1.56,.64,1) both}
+.anim-slideL{animation:slideInL .45s cubic-bezier(.34,1.56,.64,1) both}
+.anim-float{animation:floaty 2.6s ease-in-out infinite}
+.anim-wiggle{animation:wiggle 1.4s ease-in-out infinite}
+.anim-shake{animation:shake .35s ease}
+.anim-glow{animation:glowPulse 1.8s ease-out infinite}
+.avatar{width:76px;height:76px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:44px;background:radial-gradient(circle at 30% 25%,#fff,#FFE4EE);box-shadow:0 8px 20px rgba(255,150,180,.28),inset 0 -4px 8px rgba(255,255,255,.8);flex:none}
+body.night .avatar{background:radial-gradient(circle at 30% 25%,#5b4d70,#3b3050)}
+.bubble{background:#FFF0F5;border-radius:20px 20px 20px 6px;padding:.65rem .9rem;font-size:.86rem;position:relative;border:2px dashed #FFD1DC}
+body.night .bubble{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.15)}
+.chip{display:inline-flex;align-items:center;justify-content:center;font-size:30px;width:52px;height:52px;border-radius:16px;background:rgba(255,255,255,.85);box-shadow:0 4px 10px rgba(0,0,0,.08);animation:popIn .35s cubic-bezier(.34,1.56,.64,1) both;cursor:pointer;transition:transform .15s}
+.chip:hover{transform:scale(1.12) rotate(-5deg)}
+body.night .chip{background:rgba(255,255,255,.14)}
+.item-btn{border-radius:20px;padding":.55rem .3rem;cursor:pointer;display:flex; classflex-direction:column;align-items:="center;border:2px solid transparent;fixedtransition:transform .15s cubic-bezier inset(.34,1.56,.64,1),-border-color .2s,box-shadow .2s;background:rgba(255,255,255,.75)}
+body.night .item-btn{background:rgba(255,255,255,.09)}
+.item-btn:hover{transform:translateY(-5px) scale(1.06);border-color:#FFD1DC;box-shadow:0 8px 18px rgba(255,150,180,.3)}
+.item-btn:active{transform:scale(.93)}
+.bar{height:14px;border-radius:999px;background:rgba(0,0,0,.08);overflow:hidden}
+body.night .bar{background:rgba(255,255,255,.14)}
+.bar>i{display:block;height:100%;border-radius:999px;transition:width .2s linear,background .3s}
+#tapeTrack{touch-action:none}
+#modalRoot{display:none}#modalRoot.show{display:flex}
+::-webkit-scrollbar{width:10px;height:10px}::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:#FFD1DC;border-radius:999px}::-webkit-scrollbar-thumb:hover{background:#FFB6C1}
+.star-on{color:#FFC93C;text-shadow:0 2px 6px rgba(255,200,60,.6)}.star-off{color:#D9D3DC}
+.toast{position:fixed;left:50%;top:80px;transform:translateX(-50%);z-index:999;padding:.6rem 1.1rem;border-radius:999px;font-weight:800;background:#fff;box-shadow:0 10px 25px rgba(0,0,0,.12);animation:popIn .3s cubic-bezier(.34,1.56,.64,1) both;font-size:.85rem}
+</style>
+</head>
+<body class="min-h-screen">
+<header class="sticky top-0 z-30 px-3 py-2.5 backdrop-blur-md" style="background:rgba(255,248,240,.72)">
+<div class="max-w-[1400px] mx-auto flex items-center gap-2 flex-wrap">
+<div class="flex items-center gap-2 mr-1"><div class="text-3xl anim-float">🧸</div><div class="leading-none"><div class="font-black text-[15px]">Tiệm Đóng Gói</div><div class="text-[10px] font-bold opacity-60">CHIBI CUTE SHOP</div></div></div>
+<div class="flex items-center gap-2 flex-wrap">
+<div class="card px-3 py-1.5 flex items-center gap-1.5 text-sm font-black"><span>💰</span><span id="hudMoney">0</span></div>
+<div class="card px-3 py-1.5 flex items-center gap-1.5 text-sm font-black"><span>💎</span><span id="hudGems">0</span></div>
+<div class="card px-3 py-1.5 flex items-center gap-2 text-sm font-black"><span>⭐</span><span id="hudLevel">1</span><div class="bar w-16"><i id="hudXpBar" style="width:0%;background:linear-gradient(90deg,#B9E7C4,#8FD9A8)"></i></div></div>
+<div class="card px-3 py-1.5 flex items-center gap-1.5 text-sm font-black"><span>📅</span><span>Ngày</span><span id="hudDay">1</span></div>
+<div class="card px-3 py-1.5 flex items-center gap-1.5 text-sm font-black"><span>📦</span><span id="hudProgress">0/6</span></div>
+</div>
+<div class="ml-auto flex items-center gap-1.5 flex-wrap">
+<button class="btn btn-butter" onclick="openShop()"><i class="fa-solid fa-store"></i><span class="hidden sm:inline">Cửa Hàng</span></button>
+<button class="btn btn-lav" onclick="openAlbum()"><i class="fa-solid fa-book"></i><span class="hidden sm:inline">Sổ Sticker</span></button>
+<button class="btn btn-mint" onclick="openFreePlay()"><i class="fa-solid fa-wand-magic-sparkles"></i><span class="hidden sm:inline">Sáng Tạo</span></button>
+<button class="btn btn-ghost" onclick="openGuide()"><i class="fa-solid fa-circle-question"></i></button>
+<button class="btn btn-ghost" onclick="toggleNight()" id="nightBtn"><i class="fa-solid fa-moon"></i></button>
+<button class="btn btn-ghost" onclick="openSettings()"><i class="fa-solid fa-gear"></i></button>
+</div>
+</div>
+</header>
+<main class="max-w-[1400px] mx-auto px-3 pb-8 grid gap-3 lg:grid-cols-[320px_minmax(0,1fr)_330px]">
+<section id="customerPanel" class="space-y-3"></section>
+<section id="stationPanel" class="space-y-3"></section>
+<section id="toolPanel" class="space-y-3"></section>
+</main>
+<div id="deliveryOverlay" class="hidden fixed inset-0 z-40 items-center pointer-events-none">
+<div class="w-full text-center"><div id="dvIcon" class="text-[90px] inline-block">🐢</div><div id="dvText" class="font-black text-xl card inline-block px-5 py-2 mt-3">Đang giao hàng...</div></div>
+</div>
+<div id="modalRoot0 z-50 items-center justify-center p-3" style="background:rgba(60,40,60,.42);backdrop-filter:blur(6px)">
+<div class="card w-full max-w-2xl max-h-[88vh] overflow-y-auto p-5 anim-pop" id="modalCard">
+<div class="flex items-center justify-between mb-4 gap-3"><h2 id="modalTitle" class="text-xl sm:text-2xl font-black">Tiêu đề</h2><button class="btn btn-ghost" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button></div>
+<div id="modalBody"></div>
+</div>
+</div>
+<script>
+let audioCtx=null;
+function ac(){if(!audioCtx){try{audioCtx=new(window.AudioContext||window.webkitAudioContext)()}catch(e){return null}}if(audioCtx.state==='suspended')audioCtx.resume();return audioCtx}
+function tone(f,d=.12,t='sine',v=.07,dl=0){const c=ac();if(!c)return;try{const o=c.createOscillator(),g=c.createGain();o.type=t;o.frequency.value=f;o.connect(g);g.connect(c.destination);const st=c.currentTime+dl;g.gain.setValueAtTime(.0001,st);g.gain.linearRampToValueAtTime(v,st+.012);g.gain.exponentialRampToValueAtTime(.0001,st+d);o.start(st);o.stop(st+d+.03)}catch(e){}}
+const SFX={click(){tone(520,.06,'triangle',.05)},pop(){tone(620,.08);tone(940,.07,'sine',.05,.05)},ting(){tone(1046,.13,'sine',.07);tone(1568,.18,'sine',.05,.07)},chirp(){tone(1300,.05,'square',.035);tone(1700,.05,'square',.03,.06)},coin(){tone(988,.07,'square',.05);tone(1319,.12,'square',.045,.07)},error(){tone(190,.16,'sawtooth',.045)},win(){[523,659,784,1046,1318].forEach((f,i)=>tone(f,.22,'sine',.07,i*.09))},tape(){tone(300,.04,'sawtooth',.02)}};
+const ORDERS_PER_DAY=6;
+const ITEMS=[{id:'bear',n:'Gấu Bông',e:'🧸',tier:1,val:20},{id:'milktea',n:'Trà Sữa',e:'🧋',tier:1,val:18},{id:'notebook',n:'Sổ Tay',e:'📒',tier:1,val:15},{id:'donut',n:'Bánh Donut',e:'🍩',tier:1,val:12},{id:'lollipop',n:'Kẹo Mút',e:'🍭',tier:1,val:10},{id:'cake',n:'Bánh Kem',e:'🍰',tier:2,val:32},{id:'flower',n:'Bó Hoa',e:'💐',tier:2,val:28},{id:'candle',n:'Nến Thơm',e:'🕯️',tier:2,val:26},{id:'cookie',n:'Bánh Quy',e:'🍪',tier:2,val:16},{id:'choco',n:'Socola',e:'🍫',tier:2,val:22},{id:'cupcake',n:'Cupcake',e:'🧁',tier:2,val:24},{id:'gift',n:'Hộp Quà',e:'🎁',tier:2,val:30},{id:'book',n:'Sách',e:'📚',tier:3,val:42},{id:'plant',n:'Sen Đá',e:'🪴',tier:3,val:36},{id:'gamepad',n:'Tay Cầm',e:'🎮',tier:3,val:65},{id:'perfume',n:'Nước Hoa',e:'🧴',tier:3,val:58},{id:'headphone',n:'Tai Nghe',e:'🎧',tier:3,val:72},{id:'catdoll',n:'Mèo Bông',e:'🐱',tier:3,val:48},{id:'camera',n:'Máy Ảnh',e:'📷',tier:4,val:130},{id:'guitar',n:'Guitar',e:'🎸',tier:4,val:150},{id:'arcade',n:'Máy Game',e:'🕹️',tier:4,val:170},{id:'ring',n:'Nhẫn Vàng',e:'💍',tier:4,val:210},{id:'watch',n:'Đồng Hồ',e:'⌚',tier:5,val:280},{id:'diamond',n:'Kim Cương',e:'💎',tier:5,val:420},{id:'car',n:'Xe Mô Hình',e:'🚗',tier:5,val:340},{id:'trophy',n:'Cúp Vàng',e:'🏆',tier:6,val:600}];
+const BOXES=[{id:'s',n:'Hộp Nhỏ',e:'📦',cap:3,cost:0,color:'#FFD1DC'},{id:'m',n:'Hộp Vừa',e:'🎁',cap:5,cost:10,color:'#C8EBD4'},{id:'l',n:'Hộp Tự Bự',e:'📦',cap:8,cost:25,color:'#FFE9A3'},{id:'xl',n:'Hộp Siêu Cấp',e:'🎀',cap:12,cost:50,color:'#D6CDF5'}];
+const PADDINGS=[{id:'bubble',n:'Xốp Bong Bóng',e:'🫧',bonus:8,cost:0,tier:1},{id:'straw',n:'Giấy Rơm',e:'🌾',bonus:6,cost:0,tier:1},{id:'colorstraw',n:'Rơm Màu',e:'🎊',bonus:12,cost:15,tier:2},{id:'waterproof',n:'Nilon Chống Nước',e:'💧',bonus:14,cost:20,tier:2},{id:'glitter',n:'Giấy Lấp Lánh',e:'✨',bonus:18,cost:30,tier:3}];
+const TAPES=[{id:'peach',n:'Hoa Đào',e:'🌸',tier:1,bonus:5},{id:'paw',n:'Chân Mèo',e:'🐾',tier:2,bonus:8},{id:'rainbow',n:'Cầu Vồng',e:'🌈',tier:3,bonus:12},{id:'star',n:'Ngôi Sao',e:'⭐',tier:4,bonus:16},{id:'heart',n:'Tình Yêu',e:'💖',tier:5,bonus:20}];
+const STAMPS=[{id:'fragile',n:'Hàng Dễ Vỡ',e:'⚠️',bonus:4},{id:'love',n:'Love You',e:'💗',bonus:5},{id:'thanks',n:'Cảm Ơn',e:'🙏',bonus:4},{id:'cute',n:'Siêu Cưng',e:'🥰',bonus:6},{id:'vip',n:'Hàng VIP',e:'👑',bonus:8}];
+const COURIERS=[{id:'turtle',n:'Rùa Siêu Tốc',e:'🐢',cost:0,dur:2.6,mult:1.00,desc:'Chậm mà chắc, miễn phí'},{id:'hamster',n:'Hamster Béo',e:'🐹',cost:12,dur:2.0,mult:1.12,desc:'Cân bằng, phí 12'},{id:'cat',n:'Mèo Bay',e:'🐱',cost:28,dur:1.5,mult:1.28,desc:'Nhanh nhẹn, phí 28'},{id:'unicorn',n:'Kỳ Lân Pastel',e:'🦄',cost:60,dur:1.0,mult:1.55,desc:'Thần tốc, phí 60'}];
+const UPGRADES=[{id:'tape',n:'Băng Keo Siêu Dính',e:'🎯',desc:'Dán băng keo nhanh hơn',max:4,cost:[150,400,900,2000]},{id:'printer',n:'Máy In Bill Tự Động',e:'🖨️',desc:'Tự động dán & quét vận đơn',max:1,cost:[1200]},{id:'glitterpaper',n:'Giấy Gói Lấp Lánh',e:'✨',desc:'+100% tiền tip mỗi cấp',max:3,cost:[500,1400,3200]},{id:'sofa',n:'Sofa Cho Khách',e:'🛋️',desc:'+12% thời gian chờ mỗi cấp',max:4,cost:[250,650,1500,3000]},{id:'shelf',n:'Kệ Hàng Thông Minh',e:'🗄️',desc:'+10% doanh thu mỗi cấp',max:5,cost:[300,800,1800,3600,7000]}];
+const DECORS=[{id:'cozy',n:'Tiệm Ấm Cúng',e:'🏠',cost:0,bg:'linear-gradient(160deg,#FFF8F0 0%,#FFE9F2 45%,#EAF6FF 100%)'},{id:'beach',n:'Tiệm Bãi Biển',e:'🏖️',cost:1800,bg:'linear-gradient(160deg,#E0F7FA 0%,#FFF9C4 50%,#FFE9D6 100%)'},{id:'sakura',n:'Tiệm Hoa Anh Đào',e:'🌸',cost:4500,bg:'linear-gradient(160deg,#FFE4EC 0%,#FFF0F5 50%,#F3E8FF 100%)'},{id:'space',n:'Tiệm Vũ Trụ Pastel',e:'🌌',cost:9000,bg:'linear-gradient(160deg,#E6E0F8 0%,#FFD1DC 50%,#DCE9FF 100%)'}];
+const STICKERS=[{id:'s1',e:'🐣',n:'Gà Con Ngộ Nghĩnh'},{id:'s2',e:'🌈',n:'Cầu Vồng May Mắn'},{id:'s3',e:'🍓',n:'Dâu Tây Ngọt Ngào'},{id:'s4',e:'🐳',n:'Cá Voi Bơi Lội'},{id:'s5',e:'🌙',n:'Trăng Lưỡi Liềm'},{id:'s6',e:'🍡',n:'Bánh Dango'},{id:'s7',e:'🦋',n:'Bướm Pastel'},{id:'s8',e:'🧁',n:'Cupcake Hạnh Phúc'},{id:'s9',e:'⭐',n:'Ngôi Sao Nhỏ'},{id:'s10',e:'🐼',n:'Panda Lười'},{id:'s11',e:'🌸',n:'Hoa Anh Đào'},{id:'s12',e:'👑',n:'Vương Miện Cute'}];
+const CUSTOMERS=[{n:'Thỏ Bánh Bao',e:'🐰'},{n:'Mèo Cây Kem',e:'🐱'},{n:'Gấu Trà Sữa',e:'🐻'},{n:'Cún Bông Bông',e:'🐶'},{n:'Cáo Cam Lười',e:'🦊'},{n:'Panda Ngủ Ngày',e:'🐼'},{n:'Ếch Xanh Mát',e:'🐸'},{n:'Hamster Béo Ú',e:'🐹'},{n:'Vịt Vàng Bơ',e:'🐤'},{n:'Kỳ Lân Pastel',e:'🦄'},{n:'Cừu Mộng Mơ',e:'🐑'},{n:'Gấu Koala',e:'🐨'}];
+const LINES=['Chào shop~ gói giúp mình thật xinh nha!','Hihi, mình tin tưởng tay nghề của shop đó!','Ơi ơi, nhớ bọc kỹ chút nha, mình nâng niu lắm!','Shop ơi làm nhanh nhanh xíu, mình gấp lắm á~','Mình muốn món quà này thật đặc biệt đó nha!','Gói đẹp là mình cho 5 sao liền á!','Nhớ dán sticker xinh xinh giúp mình nhé!','Ui, tiệm dễ thương quá, giao nhanh giúp mình nha!'];
+const FEEDBACK={5:['Quá xuất sắc! Shop đóng gói như nghệ sĩ! 🎨','Trời ơi đẹp quá, mình muốn mở hoài không nỡ! 🥹','10 điểm không nhưng! Sẽ quay lại ngay! ⭐'],4:['Đẹp lắm luôn, chỉ tiếc chút xíu thôi! 😍','Rất hài lòng nha shop ơi~ 💕','Gói cưng xỉu, cảm ơn shop! 🥰'],3:['Cũng ổn áp đó shop~ 🙂','Tạm được nha, lần sau cố thêm nhé! 😊','Gói ok nhưng hơi lâu xíu! 😅'],2:['Hơi lâu á shop ơi... 😕','Gói chưa được xinh lắm đâu nha! 😣'],1:['Trời ơi shop ơi... 😭','Mình hơi thất vọng á... 💔']};
+const SAVE_KEY='chibi_pack_shop_v1';
+function defaultState(){return{money:150,gems:0,level:1,xp:0,day:1,totalOrders:0,totalStars:0,totalEarned:0,dayStats:{earned:0,tips:0,stars:0,orders:0,perfect:0},unlockedItems:['bear','milktea','notebook','donut','lollipop'],unlockedTapes:['peach'],unlockedPaddings:['bubble','straw'],unlockedDecor:['cozy'],decor:'cozy',upgrades:{},autoPackers:0,stickers:[],night:false,lastGift:''}}
+let state=defaultState();
+function save(){try{localStorage.setItem(SAVE_KEY,JSON.stringify(state))}catch(e){}}
+function load(){try{const r=localStorage.getItem(SAVE_KEY);if(!r)return false;const d=JSON.parse(r);state=Object.assign(defaultState(),d);state.dayStats=Object.assign({earned:0,tips:0,stars:0,orders:0,perfect:0},d.dayStats||{});state.upgrades=d.upgrades||{};return true}catch(e){return false}}
+const $=id=>document.getElementById(id);
+const fmt=n=>Math.round(n).toLocaleString('vi-VN');
+const rnd=(a,b)=>a+Math.random()*(b-a);
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+function toast(m){const el=document.createElement('div');el.className='toast';el.textContent=m;document.body.appendChild(el);setTimeout(()=>{el.style.transition='opacity .4s';el.style.opacity='0';setTimeout(()=>el.remove(),400)},1500)}
+function boom(p=1){if(typeof confetti!=='function')return;confetti({particleCount:Math.round(110*p),spread:85,origin:{y:.62},colors:['#FFD1DC','#FFF9C4','#E8F5E9','#E6E0F8','#FFB6C1','#B9E7C4']})}
+function smallBoom(x,y){if(typeof confetti!=='function')return;confetti({particleCount:26,spread:60,startVelocity:26,origin:{x,y},colors:['#FFD1DC','#FFF9C4','#E6E0F8']})}
+function xpNeeded(){return 100+(state.level-1)*70}
+function addXP(n){state.xp+=n;while(state.xp>=xpNeeded()){state.xp-=xpNeeded();state.level++;SFX.win();boom(.8);toast(`🎉 Lên cấp ${state.level}! Mở khoá thêm mặt hàng mới!`)}updateHUD()}
+let order=null,pack=null,timerHandle=null;
+function generateOrder(){
+const lvl=state.level,avail=ITEMS.filter(i=>state.unlockedItems.includes(i.id));
+const maxN=clamp(1+Math.floor(lvl/2.5),1,4);
+const n=Math.max(1,Math.round(rnd(1,maxN)));
+const chosen=[...avail].sort(()=>Math.random()-0.5).slice(0,Math.min(n,avail.length));
+const items=chosen.map(it=>({id:it.id,qty:1+(Math.random()<.22?1:0)}));
+const total=items.reduce((s,i)=>s+i.qty,0);
+let boxSize='s';if(total>3)boxSize='m';if(total>5)boxSize='l';if(total>8)boxSize='xl';
+let event=null;const r=Math.random();
+if(r<.12)event={type:'rush',label:'⚡ ĐƠN CẤP BÁCH — x2 tiền!',mult:2.0};
+else if(r<.22)event={type:'rain',label:'🌧️ TRỜI MƯA — cần Nilon Chống Nước!',mult:1.25};
+else if(r<.30)event={type:'vip',label:'👑 KHÁCH VIP — cần Thiệp + Tem!',mult:1.5};
+const sofaLv=state.upgrades.sofa||0;
+const patienceMax=Math.round(clamp(62-lvl*1.3,28,62)*(1+sofaLv*.12));
+const baseVal=items.reduce((s,i)=>s+ITEMS.find(x=>x.id===i.id).val*i.qty,0);
+const shelfLv=state.upgrades.shelf||0;
+const reward=Math.round(baseVal*(1+lvl*.14)*(1+shelfLv*.10));
+return{customer:pick(CUSTOMERS),line:pick(LINES),items,boxSize,total,patienceMax,patienceLeft:patienceMax,reward,event,done:false}}
+function startNewOrder(){if(state.dayStats.orders>=ORDERS_PER_DAY){endDay();return}order=generateOrder();pack={step:0,box:null,contents:[],padding:null,gift:'',tape:null,tapeProgress:0,stamps:[],labelPlaced:false,qrScans:0,courier:null,mistakes:0};renderAll();startPatience();SFX.chirp()}
+function startPatience(){clearInterval(timerHandle);timerHandle=setInterval(()=>{if(!order||order.done)return;order.patienceLeft-=.1;if(order.patienceLeft<=0){order.patienceLeft=0;clearInterval(timerHandle);failOrder();return}updatePatienceUI()},100)}
+function updatePatienceUI(){const bar=$('patBar'),txt=$('patText');if(!bar||!order)return;const ratio=order.patienceLeft/order.patienceMax;bar.style.width=(ratio*100)+'%';bar.style.background=ratio>.5?'linear-gradient(90deg,#B9E7C4,#8FD9A8)':ratio>.25?'linear-gradient(90deg,#FFE9A3,#FFD966)':'linear-gradient(90deg,#FFB6C1,#FF8095)';if(txt)txt.textContent=Math.ceil(order.patienceLeft)+'s'}
+const STEPS=[{id:'box',n:'Chọn Hộp',icon:'📦'},{id:'items',n:'Xếp Đồ',icon:'🧸'},{id:'decor',n:'Trang Trí',icon:'✨'},{id:'seal',n:'Dán Băng Keo',icon:'🎀'},{id:'label',n:'Vận Đơn',icon:'🏷️'},{id:'ship',n:'Giao Hàng',icon:'🚚'}];
+function renderAll(){updateHUD();renderCustomer();renderStation();renderTools()}
+function updateHUD(){$('hudMoney').textContent=fmt(state.money);$('hudGems').textContent=fmt(state.gems);$('hudLevel').textContent=state.level;$('hudDay').textContent=state.day;$('hudXpBar').style.width=clamp((state.xp/xpNeeded())*100,0,100)+'%';$('hudProgress').textContent=`${state.dayStats.orders}/${ORDERS_PER_DAY}`}
+function renderCustomer(){
+if(!order)return;const c=order.customer;const have={};pack.contents.forEach(id=>have[id]=(have[id]||0)+1);
+const reqHTML=order.items.map(it=>{const meta=ITEMS.find(x=>x.id===it.id);const ok=(have[it.id]||0)>=it.qty;return `<li class="flex items-center gap-2 py-.5"><span class="text-xl">${meta.e}</span><span class="font-bold text-[13px] ${ok?'text-green-600':''}">${meta.n}</span><span class="ml-auto text-[11px] font-black px-2 py-.5 rounded-full ${ok?'bg-mint text-green-700':'bg-pinky/60'}">x${it.qty}</span></li>`}).join('');
+const eventHTML=order.event?`<div class="mt-2 px-3 py-2 rounded-2xl text-[12px] font-black anim-glow" style="background:#FFF3C4;color:#8A6B00">${order.event.label}</div>`:'';
+$('customerPanel').innerHTML=`<div class="card p-4 anim-slideL">
+<div class="flex items-center gap-3"><div class="avatar anim-float">${c.e}</div><div class="min-w-0"><div class="font-black text-[15px] truncate">${c.n}</div><div class="text-[11px] font-bold opacity-55">Khách hàng #${String(state.totalOrders+1).padStart(3,'0')}</div><div class="flex gap-.5 mt-1 text-[11px]">${'⭐'.repeat(Math.min(5,1+Math.floor(state.level/3)))}</div></div></div>
+<div class="bubble mt-3">"${order.line}"</div>${eventHTML}
+<div class="mt-4"><div class="flex justify-between text-[11px] font-black mb-1"><span>⏳ KIÊN NHẪN</span><span id="patText">${Math.ceil(order.patienceLeft)}s</span></div><div class="bar"><i id="patBar" style="width:100%;background:linear-gradient(90deg,#B9E7C4,#8FD9A8)"></i></div></div>
+<div class="mt-4"><div class="text-[12px] font-black mb-1 opacity-70">📋 YÊU CẦU ĐƠN HÀNG</div><ul class="divide-y divide-black/5">${reqHTML}</ul></div>
+<div class="mt-4 grid grid-cols-2 gap-2 text-center"><div class="rounded-2xl py-2" style="background:rgba(255,233,163,.5)"><div class="text-[10px] font-black opacity-60">THƯỞNG</div><div class="font-black text-[15px]">💰${fmt(order.reward*(order.event?.mult||1))}</div></div><div class="rounded-2xl py-2" style="background:rgba(214,205,245,.5)"><div class="text-[10px] font-black opacity-60">CỠ HỘP GỢI Ý</div><div class="font-black text-[15px]">${BOXES.find(b=>b.id===order.boxSize).e} ${order.total} món</div></div></div>
+</div>`;
+updatePatienceUI()}
+function renderStation(){
+if(!pack)return;const stepId=STEPS[pack.step].id;const boxMeta=pack.box?BOXES.find(b=>b.id===pack.box):null;
+const stepBar=STEPS.map((s,i)=>{const active=i===pack.step,done=i<pack.step;return `<div class="flex flex-col items-center gap-1 flex-1 min-w-0"><div class="w-9 h-9 rounded-full flex items-center justify-center text-[15px] font-black transition-all ${active?'scale-110 shadow-lg':''}" style="background:${done?'#B9E7C4':active?'#FFB6C1':'rgba(0,0,0,.06)'};color:${done||active?'#fff':'#8b8b8b'}">${done?'✓':s.icon}</div><div class="text-[9px] font-black text-center leading-tight ${active?'':'opacity-50'}">${s.n}</div></div>`}).join('');
+let boxInner='';
+if(pack.contents.length===0)boxInner=`<div class="text-center opacity-30"><div class="text-[54px]">📦</div><div class="text-[11px] font-black mt-1">Hộp đang trống</div></div>`;
+else boxInner=pack.contents.map((id,i)=>{const it=ITEMS.find(x=>x.id===id);const rm=stepId==='items';return `<span class="chip" ${rm?`data-remove="${i}"`:''} title="${it.n}">${it.e}</span>`}).join('');
+const boxBg=boxMeta?boxMeta.color:'rgba(255,255,255,.5)';
+const tapeStrip=pack.tapeProgress>0?`<div class="absolute left-0 top-1/2 -translate-y-1/2 h-7 rounded-r-full pointer-events-none" style="width:${pack.tapeProgress}%;background:linear-gradient(90deg,rgba(255,182,193,.85),rgba(255,140,170,.85));box-shadow:0 3px 8px rgba(0,0,0,.1)"><div class="w-full h-full flex items-center justify-around overflow-hidden text-[13px] opacity-90">${'🌸'.repeat(Math.max(1,Math.floor(pack.tapeProgress/12)))}</div></div>`:'';
+const labelSticker=pack.labelPlaced?`<div class="absolute -top-3 -right-3 rotate-6 bg-white rounded-xl px-2.5 py-1.5 shadow-lg border-2 border-dashed border-pinky text-[9px] font-black leading-tight anim-pop"><div>TO: ${order.customer.n}</div><div class="opacity-60">Địa chỉ: Xóm Cầu Vồng 🌈</div><div class="mt-1 flex items-center gap-1"><span class="inline-flex items-center justify-center w-6 h-6 rounded" style="background:repeating-conic-gradient(#000 0% 25%, #fff 0% 50%) 50%/4px 4px"></span><span class="text-[8px]">${pack.qrScans>=3?'✅ ĐÃ QUÉT':'chưa quét'}</span></div></div>`:'';
+const hints={box:'👉 Chọn kích cỡ hộp phù hợp ở cột bên phải',items:'👉 Bấm vào món hàng để xếp vào hộp. Bấm vào món trong hộp để bỏ ra.',decor:'👉 Chọn lớp lót, băng keo và viết thiệp cảm ơn',seal:'👉 Giữ chuột/ngón tay và kéo ngang để dán băng keo, rồi dán tem',label:'👉 Kéo vận đơn vào hộp, sau đó bấm vào mã QR để quét',ship:'👉 Chọn đơn vị vận chuyển để giao hàng!'};
+$('stationPanel').innerHTML=`<div class="card p-3 flex items-center gap-1">${stepBar}</div>
+<div class="card p-5 relative overflow-hidden">
+<div class="absolute inset-0 opacity-[.06] pointer-events-none text-[120px] flex items-center justify-center select-none">${order.event?'⚡':'🎀'}</div>
+<div class="text-center text-[12px] font-black opacity-70 mb-3 relative">${hints[STEPS[pack.step].id]}</div>
+<div id="boxArea" class="relative mx-auto transition-all" style="width:min(100%,320px);height:230px;border-radius:32px;background:${boxBg};border:5px dashed rgba(255,255,255,.85);box-shadow:0 14px 30px rgba(0,0,0,.08);display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px;padding:14px;${pack.labelPlaced?'outline:4px solid #B9E7C4;':''}">${boxInner}${tapeStrip}${labelSticker}</div>
+<div class="flex items-center justify-center gap-2 mt-4 flex-wrap text-[11px] font-black">
+<span class="px-3 py-1 rounded-full" style="background:rgba(0,0,0,.05)">${boxMeta?boxMeta.e+' '+boxMeta.n:'📦 Chưa chọn hộp'}</span>
+<span class="px-3 py-1 rounded-full" style="background:rgba(0,0,0,.05)">🧸 ${pack.contents.length}/${order.total} món</span>
+${pack.padding?`<span class="px-3 py-1 rounded-full" style="background:rgba(185,231,196,.6)">${PADDINGS.find(p=>p.id===pack.padding).e} ${PADDINGS.find(p=>p.id===pack.padding).n}</span>`:''}
+${pack.stamps.length?`<span class="px-3 py-1 rounded-full" style="background:rgba(255,209,220,.7)">${pack.stamps.map(s=>STAMPS.find(x=>x.id===s).e).join('')} ${pack.stamps.length} tem</span>`:''}
+</div></div>`}
+function renderTools(){
+if(!pack)return;const stepId=STEPS[pack.step].id;
+const backBtn=pack.step>0?`<button class="btn btn-ghost w-full" data-act="back"><i class="fa-solid fa-arrow-left"></i> Quay lại</button>`:'';
+let html='';
+if(stepId==='box'){
+html=`<div class="card p-4 anim-slideR"><div class="font-black mb-3">📦 Chọn Kích Cỡ Hộp</div><div class="grid grid-cols-2 gap-2">${BOXES.map(b=>`<button class="item-btn py-3" data-act="pickbox" data-id="${b.id}" style="${pack.box===b.id?'border-color:#FFB6C1;box-shadow:0 8px 18px rgba(255,150,180,.35)':''}"><span class="text-3xl">${b.e}</span><span class="text-[12px] font-black mt-1">${b.n}</span><span class="text-[10px] opacity-60 font-bold">Tối đa ${b.cap} món</span><span class="text-[10px] font-black ${b.cost>0?'text-orange-500':'text-green-600'}">${b.cost>0?'-'+b.cost+'💰':'Miễn phí'}</span></button>`).join('')}</div><div class="text-[11px] opacity-60 font-bold mt-3 text-center">Đơn này có <b>${order.total}</b> món — hộp quá nhỏ sẽ không vừa đâu nha!</div></div>`}
+if(stepId==='items'){
+const avail=ITEMS.filter(i=>state.unlockedItems.includes(i.id));
+const need={};order.items.forEach(i=>need[i.id]=(need[i.id]||0)+i.qty);
+const have={};pack.contents.forEach(id=>have[id]=(have[id]||0)+1);
+html=`<div class="card p-4 anim-slideR"><div class="font-black mb-2">🧸 Kệ Hàng</div><div class="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-3 gap-2 max-h-[340px] overflow-y-auto pr-1">${avail.map(it=>{const nq=need[it.id]||0,hq=have[it.id]||0,dn=nq>0&&hq>=nq;return `<button class="item-btn" data-act="additem" data-id="${it.id}" style="${dn?'border-color:#8FD9A8;background:rgba(185,231,196,.55)':''}"><span class="text-2xl">${it.e}</span><span class="text-[9.5px] font-black mt-1 text-center leading-tight">${it.n}</span>${nq>0?`<span class="text-[9px] font-black mt-1 px-1.5 rounded-full ${dn?'bg-green-500 text-white':'bg-pink-300 text-white'}">${hq}/${nq}</span>`:''}</button>`}).join('')}</div><button class="btn btn-mint w-full mt-3" data-act="doneitems"><i class="fa-solid fa-check"></i> Hoàn Tất Xếp Đồ</button>${backBtn}</div>`}
+if(stepId==='decor'){
+const pads=PADDINGS.filter(p=>p.tier<=Math.max(1,Math.ceil(state.level/2))||state.unlockedPaddings.includes(p.id));
+html=`<div class="card p-4 anim-slideR space-y-4"><div><div class="font-black mb-2 text-[13px]">🫧 Lớp Lót Chống Sốc</div><div class="grid grid-cols-2 gap-2">${pads.map(p=>`<button class="item-btn py-2" data-act="pickpad" data-id="${p.id}" style="${pack.padding===p.id?'border-color:#8FD9A8;background:rgba(185,231,196,.5)':''}"><span class="text-2xl">${p.e}</span><span class="text-[10px] font-black mt-1 text-center leading-tight">${p.n}</span><span class="text-[9px] font-bold opacity-60">+${p.bonus} điểm${p.cost?` · -${p.cost}💰`:''}</span></button>`).join('')}</div></div>
+<div><div class="font-black mb-2 text-[13px]">💌 Thiệp Cảm Ơn</div><div class="flex gap-1.5 flex-wrap mb-2">${['Cảm ơn bạn nhiều nhé! 💕','Chúc bạn một ngày thật vui! 🌈','Mở quà vui vẻ nha~ 🎀','Yêu bạn nhiều lắm! 💗'].map(t=>`<button class="btn btn-ghost text-[10px] px-2.5 py-1" data-act="giftpreset" data-t="${t}">${t}</button>`).join('')}</div><input id="giftInput" maxlength="60" placeholder="Viết lời chúc dễ thương..." class="w-full px-4 py-2.5 rounded-2xl font-bold text-[13px] outline-none" style="background:rgba(0,0,0,.05);border:2px dashed #FFD1DC" value="${(pack.gift||'').replace(/"/g,'&quot;')}"/></div>
+<button class="btn btn-mint w-full" data-act="donedecor"><i class="fa-solid fa-arrow-right"></i> Tiếp Tục</button>${backBtn}</div>`}
+if(stepId==='seal'){
+const tapes=TAPES.filter(t=>t.tier<=Math.max(1,Math.ceil(state.level/1.5))||state.unlockedTapes.includes(t.id));
+const tapeDone=pack.tapeProgress>=100;
+html=`<div class="card p-4 anim-slideR space-y-4"><div><div class="font-black mb-2 text-[13px]">🎀 Chọn Băng Keo</div><div class="grid grid-cols-3 gap-2">${tapes.map(t=>`<button class="item-btn py-2" data-act="picktape" data-id="${t.id}" style="${pack.tape===t.id?'border-color:#FFB6C1;background:rgba(255,209,220,.5)':''}"><span class="text-2xl">${t.e}</span><span class="text-[9px] font-black mt-1 text-center leading-tight">${t.n}</span></button>`).join('')}</div></div>
+<div><div class="flex justify-between text-[12px] font-black mb-2"><span>🎯 Dán băng keo (kéo ngang)</span><span id="tapePct">${Math.floor(pack.tapeProgress)}%</span></div><div id="tapeTrack" class="relative h-16 rounded-3xl overflow-hidden" style="background:rgba(0,0,0,.05);border:3px dashed #FFD1DC"><div id="tapeFill" class="absolute inset-y-0 left-0 transition-all duration-100" style="width:${pack.tapeProgress}%;background:linear-gradient(90deg,#FFD1DC,#FF9EB5)"></div><div id="tapeRoll" class="absolute top-1/2 -translate-y-1/2 text-3xl transition-all duration-100" style="left:calc(${pack.tapeProgress}% - 20px)">${pack.tape?TAPES.find(t=>t.id===pack.tape).e:'🎀'}</div><div class="absolute inset-0 flex items-center justify-center text-[11px] font-black opacity-40 pointer-events-none">${tapeDone?'✅ ĐÃ DÁN XONG':'GIỮ VÀ KÉO NGANG →'}</div></div></div>
+<div><div class="font-black mb-2 text-[13px]">🏷️ Tem Dán (chọn tối đa 3)</div><div class="grid grid-cols-3 gap-2">${STAMPS.map(s=>`<button class="item-btn py-2" data-act="pickstamp" data-id="${s.id}" style="${pack.stamps.includes(s.id)?'border-color:#FFB6C1;background:rgba(255,209,220,.55)':''}"><span class="text-xl">${s.e}</span><span class="text-[9px] font-black mt-1 text-center leading-tight">${s.n}</span></button>`).join('')}</div></div>
+<button class="btn btn-mint w-full" data-act="doneseal"><i class="fa-solid fa-box-open"></i> Niêm Phong Hộp</button>${backBtn}</div>`}
+if(stepId==='label'){
+const autoPrinter=(state.upgrades.printer||0)>0;
+html=`<div class="card p-4 anim-slideR space-y-3"><div class="font-black text-[13px]">🏷️ In & Dán Vận Đơn</div>
+${!pack.labelPlaced?`<div class="text-[11px] font-bold opacity-70">Kéo tấm vận đơn bên dưới <b>thả vào hộp</b> để dán nhé!${autoPrinter?'<br><span class="text-green-600">🖨️ Máy in tự động đang bật!</span>':''}</div>
+<div id="labelCard" class="cursor-grab active:cursor-grabbing select-none p-3 rounded-2xl touch-none" style="background:#fff;border:3px dashed #B9E7C4;box-shadow:0 8px 20px rgba(0,0,0,.1)"><div class="flex items-center gap-2"><div class="text-2xl">📮</div><div class="text-[10px] font-black leading-tight"><div>NGƯỜI NHẬN: ${order.customer.n}</div><div class="opacity-60">ĐC: Xóm Cầu Vồng, Thị Trấn Kẹo Ngọt</div><div class="opacity-60">MÃ: CP${Math.floor(Math.random()="*900000+100000)}</div></text-[div><div class="ml11-auto w-px9 h-9 rounded" style="background:re]peating-conic-gradient(#000 0% 25%, #fff 0% 50%) 50%/5px 5px"></div></div></div>
+<button class="btn btn-ghost w-full text-[11px]" data-act="autolabel"><i class="fa-solid fa-wand-magic"></i> Dán tự động (nếu lười)</button>`
+:`<div class="p-3 rounded-2xl text-center" style="background:rgba(185,231,196,.45)"><div class="text-3xl">✅</div><div class="font-black text-[13px] mt-1">Vận đơn đã dán!</div><div class="text-[11px] font-bold opacity-70 mt-1">Bấm vào mã QR trên hộp để quét (3 lần)</div></div>
+<div class="text-center"><div class="inline-block px-4 py-3 rounded-2xl" style="background:#fff;border:3px dashed #D6CDF5"><div id="qrBig" class="w-24 h-24 mx-auto rounded-lg cursor-pointer active:scale-90 transition" style="background:repeating-conic-gradient(#3a2f3f 0% 25%, #fff 0% 50%) 50%/8px 8px"></div><div class font-black mt-2">Đã quét: ${pack.qrScans}/3</div></div></div>
+<button class="btn btn-mint w-full" data-act="donelabel" ${pack.qrScans<3?'disabled':''}><i class="fa-solid fa-check"></i> Hoàn Tất Vận Đơn</button>`}
+${backBtn}</div>`}
+if(stepId==='ship'){
+html=`<div class="card p-4 anim-slideR space-y-3"><div class="font-black text-[13px]">🚚 Chọn Đơn Vị Vận Chuyển</div><div class="space-y-2">${COURIERS.map(c=>`<button class="item-btn w-full flex-row items-center gap-3 px-3 py-2.5" data-act="pickcourier" data-id="${c.id}"><span class="text-3xl">${c.e}</span><span class="text-left flex-1"><span class="block text-[12px] font-black">${c.n}</span><span class="block text-[10px] opacity-60 font-bold">${c.desc}</span></span><span class="text-[10px] font-black px-2 py-1 rounded-full ${c.cost>0?'bg-orange-100 text-orange-600':'bg-green-100 text-green-600'}">${c.cost>0?'-'+c.cost+'💰':'FREE'}</span></button>`).join('')}</div>${backBtn}</div>`}
+$('toolPanel').innerHTML=html;
+if(stepId==='seal')initTapeDrag();
+if(stepId==='label'){initLabelDrag();const qr=$('qrBig');if(qr)qr.addEventListener('click',handleQRScan);if((state.upgrades.printer||0)>0&&!pack.labelPlaced)setTimeout(()=>{if(!pack.labelPlaced){pack.labelPlaced=true;pack.qrScans=3;SFX.ting();renderAll()}},700)}}
+document.addEventListener('click',e=>{
+const el=e.target.closest('[data-act]');if(!el)return;
+const act=el.dataset.act,id=el.dataset.id;
+if(act==='pickbox'){const box=BOXES.find(b=>b.id===id);if(box.cap<order.total){SFX.error();el.classList.add('anim-shake');setTimeout(()=>el.classList.remove('anim-shake'),400);toast('❌ Hộp nhỏ quá, không đựng đủ đâu!');return}pack.box=id;state.money-=box.cost;SFX.pop();if(box.cost>0)toast(`-${box.cost}💰 tiền hộp`);pack.step=1;renderAll();return}
+if(act==='additem'){if(pack.contents.length>=12){SFX.error();toast('Hộp đầy rồi!');return}pack.contents.push(id);SFX.pop();smallBoom(.5,.5);renderAll();return}
+if(act==='doneitems'){const need={};order.items.forEach(i=>need[i.id]=(need[i.id]||0)+i.qty);const have={};pack.contents.forEach(x=>have[x]=(have[x]||0)+1);let diff=0;Object.keys(need).forEach(k=>diff+=Math.abs((need[k]||0)-(have[k]||0)));Object.keys(have).forEach(k=>{if(!need[k])diff+=have[k]});if(diff>0){SFX.error();toast('❌ Chưa đúng yêu cầu, kiểm tra lại nhé!');return}SFX.ting();pack.step=2;renderAll();return}
+if(act==='pickpad'){const p=PADDINGS.find(x=>x.id===id);if(pack.padding!==id){pack.padding=id;if(p.cost)state.money-=p.cost;SFX.click()}save();renderAll();return}
+if(act==='giftpreset'){pack.gift=el.dataset.t;const inp=$('giftInput');if(inp)inp.value=pack.gift;SFX.chirp();return}
+if(act==='donedecor'){const inp=$('giftInput');if(inp)pack.gift=inp.value;if(!pack.padding){SFX.error();toast('🫧 Chọn lớp lót chống sốc đi nha!');return}SFX.ting();pack.step=3;renderAll();return}
+if(act==='picktape'){pack.tape=id;SFX.click();renderAll();return}
+if(act==='pickstamp'){const i=pack.stamps.indexOf(id);if(i>=0)pack.stamps.splice(i,1);else{if(pack.stamps.length>=3){SFX.error();toast('Tối đa 3 tem thôi nha!');return}pack.stamps.push(id);SFX.chirp()}renderAll();return}
+if(act==='doneseal'){if(pack.tapeProgress<100){SFX.error();toast('🎀 Dán băng keo chưa xong kìa!');return}if(pack.stamps.length===0){SFX.error();toast('🏷️ Dán ít nhất 1 con tem nhé!');return}SFX.ting();pack.step=4;renderAll();return}
+if(act==='autolabel'){pack.labelPlaced=true;SFX.ting();renderAll();return}
+if(act==='donelabel'){if(pack.qrScans<3){SFX.error();toast('📱 Quét mã QR chưa đủ 3 lần!');return}SFX.ting();pack.step=5;renderAll();return}
+if(act==='pickcourier'){const c=COURIERS.find(x=>x.id===id);if(state.money<c.cost){SFX.error();toast('💸 Không đủ tiền trả phí ship!');return}pack.courier=id;deliverOrder();return}
+if(act==='back'){if(pack.step>0){pack.step--;SFX.click();renderAll()}return}});
+function initTapeDrag(){
+const track=$('tapeTrack');if(!track)return;let dragging=false;
+const update=cx=>{const r=track.getBoundingClientRect();let p=((cx-r.left)/r.width)*100;p=clamp(p,0,100);if(p>pack.tapeProgress){pack.tapeProgress=p;const fill=$('tapeFill'),roll=$('tapeRoll'),pct=$('tapePct');if(fill)fill.style.width=p+'%';if(roll)roll.style.left=`calc(${p}% - 20px)`;if(pct)pct.textContent=Math.floor(p)+'%';if(Math.random()<.25)SFX.tape();const strip=document.querySelector('#boxArea > div[style*="linear-gradient(90deg, rgba(255, 182, 193"]');if(strip)strip.style.width=p+'%';if(p>=100){SFX.ting();smallBoom(.5,.45);renderTools()}}};
+track.addEventListener('pointerdown',e=>{dragging=true;track.setPointerCapture(e.pointerId);update(e.clientX)});
+track.addEventListener('pointermove',e=>{if(dragging)update(e.clientX)});
+track.addEventListener('pointerup',()=>{dragging=false});
+track.addEventListener('pointercancel',()=>{dragging=false})}
+function initLabelDrag(){
+const lbl=$('labelCard');if(!lbl)return;let dragging=false,ox=0,oy=0;
+lbl.addEventListener('pointerdown',e=>{dragging=true;lbl.setPointerCapture(e.pointerId);const r=lbl.getBoundingClientRect();ox=e.clientX-r.left;oy=e.clientY-r.top;lbl.style.position='fixed';lbl.style.left=r.left+'px';lbl.style.top=r.top+'px';lbl.style.width=r.width+'px';lbl.style.zIndex='200';lbl.style.transform='rotate(-3deg) scale(1.03)';lbl.style.boxShadow='0 18px 40px rgba(0,0,0,.25)'});
+lbl.addEventListener('pointermove',e=>{if(!dragging)return;lbl.style.left=(e.clientX-ox)+'px';lbl.style.top=(e.clientY-oy)+'px'});
+const end=e=>{if(!dragging)return;dragging=false;lbl.style.transform='';lbl.style.boxShadow='';const br=$('boxArea').getBoundingClientRect();const inBox=e.clientX>=br.left&&e.clientX<=br.right&&e.clientY>=br.top&&e.clientY<=br.bottom;if(inBox){pack.labelPlaced=true;SFX.ting();boom(.6);renderAll()}else{lbl.style.position='';lbl.style.left='';lbl.style.top='';lbl.style.width='';lbl.style.zIndex=''}};
+lbl.addEventListener('pointerup',end);lbl.addEventListener('pointercancel',end)}
+function handleQRScan(){if(pack.qrScans>=3)return;pack.qrScans++;SFX.chirp();smallBoom(.5,.5);if(pack.qrScans>=3){SFX.ting();toast('✅ Quét mã thành công!')}renderAll()}
+function deliverOrder(){
+clearInterval(timerHandle);
+const c=COURIERS.find(x=>x.id===pack.courier);state.money-=c.cost;updateHUD();
+const ov=$('deliveryOverlay');ov.classList.remove('hidden');ov.classList.add('flex');
+$('dvIcon').textContent=c.e;$('dvText').textContent=`${c.n} đang giao hàng...`;$('dvIcon').style.animation=`slideAcross ${c.dur}s linear forwards`;
+SFX.coin();
+setTimeout(()=>{ov.classList.add('hidden');ov.classList.remove('flex');$('dvIcon').style.animation='';finishOrder(c)},c.dur*1000+250)}
+function finishOrder(courier){
+order.done=true;
+const need={};order.items.forEach(i=>need[i.id]=(need[i.id]||0)+i.qty);
+const have={};pack.contents.forEach(id=>have[id]=(have[id]||0)+1);
+let diff=0;Object.keys(need).forEach(k=>diff+=Math.abs((need[k]||0)-(have[k]||0)));Object.keys(have).forEach(k=>{if(!need[k])diff+=have[k]});
+const itemScore=Math.max(0,40-diff*12);
+const boxScore=pack.box===order.boxSize?15:8;
+const pad=PADDINGS.find(p=>p.id===pack.padding);
+let padScore=pad?10:0;
+if(order.event?.type==='rain'&&pack.padding!=='waterproof')padScore=0;
+const tapeScore=pack.tapeProgress>=100?10:Math.round(pack.tapeProgress/10);
+const stampScore=pack.stamps.length>0?5:0;
+const labelScore=(pack.labelPlaced&&pack.qrScans>=3)?10:0;
+const timeRatio=clamp(order.patienceLeft/order.patienceMax,0,1);
+const timeScore=Math.round(timeRatio*10);
+let score=itemScore+boxScore+padScore+tapeScore+stampScore+labelScore+timeScore;
+let vipFail=false;
+if(order.event?.type==='vip'){if(!(pack.gift&&pack.gift.trim().length>2)||pack.stamps.length===0){vipFail=true;score-=18}}
+score=clamp(Math.round(score),0,100);
+const stars=score>=95?5:score>=85?4:score>=70?3:score>=50?2:1;
+const eventMult=order.event?.mult||1;
+const base=order.reward*(0.45+score/100)*eventMult;
+const tapeMeta=pack.tape?TAPES.find(t=>t.id===pack.tape):null;
+const glitterLv=state.upgrades.glitterpaper||0;
+let tipMult=0.04*stars;
+if(pad)tipMult+=pad.bonus/100;
+if(tapeMeta)tipMult+=tapeMeta.bonus/100;
+tipMult+=pack.stamps.length*0.03;
+tipMult+=(courier.mult-1)*0.55;
+tipMult*=(1+glitterLv);
+if(pack.gift&&pack.gift.trim().length>2)tipMult+=0.18;
+const earned=Math.round(base),tip=Math.round(base*tipMult);
+state.money+=earned+tip;state.totalEarned+=earned+tip;state.totalOrders++;state.totalStars+=stars;
+state.dayStats.earned+=earned;state.dayStats.tips+=tip;state.dayStats.stars+=stars;state.dayStats.orders++;
+if(stars===5)state.dayStats.perfect++;
+addXP(Math.round(score/1.6)+12);
+let gotSticker=null;
+if(stars===5){state.gems+=1;boom(1.4);SFX.win();const locked=STICKERS.filter(s=>!state.stickers.includes(s.id));if(locked.length){gotSticker=pick(locked);state.stickers.push(gotSticker.id)}}
+else if(stars===4){boom(.5);SFX.ting()}else{SFX.click()}
+save();updateHUD();
+const fb=pick(FEEDBACK[stars]);
+const starsHTML=Array.from({length:5},(_,i)=>`<i class="fa-solid fa-star text-2xl ${i<stars?'star-on':'star-off'}"></i>`).join('');
+const detail=[['🧸 Xếp đồ',itemScore,40],['📦 Chọn hộp',boxScore,15],['🫧 Lớp lót',padScore,10],['🎀 Băng keo',tapeScore,10],['🏷️ Tem dán',stampScore,5],['📮 Vận đơn',labelScore,10],['⏳ Thời gian',timeScore,10]].map(([n,v,m])=>`<div class="flex items-center gap-2 text-[11px] font-bold"><span class="w-[86px] opacity-70">${n}</span><div class="bar flex-1"><i style="width:${(v/m)*100}%;background:${v/m>.8?'#8FD9A8':v/m>.5?'#FFD966':'#FFB6C1'}"></i></div><span class="w-9 text-right">${v}/${m}</span></div>`).join('');
+showModal(stars===5?'🎉 HOÀN HẢO! S RANK!':stars>=4?'😍 Rất Tốt!':stars>=3?'🙂 Tạm Ổn!':'😢 Cần Cố Gắng!',
+`<div class="text-center"><div class="flex justify-center gap-1 mb-2">${starsHTML}</div><div class="text-4xl mb-2">${order.customer.e}</div><div class="bubble inline-block max-w-md">"${fb}"</div><div class="font-black text-lg mt-2 opacity-70">— ${order.customer.n}</div>${vipFail?`<div class="mt-2 text-[11px] font-black text-red-500">⚠️ Khách VIP chưa hài lòng (thiếu thiệp hoặc tem)</div>`:''}</div>
+<div class="mt-5 space-y-1.5">${detail}</div>
+<div class="mt-5 grid grid-cols-3 gap-2 text-center">
+<div class="rounded-2xl py-3" style="background:rgba(255,233,163,.6)"><div class="text-[10px] font-black opacity-60">DOANH THU</div><div class="font-black text-lg">💰${fmt(earned)}</div></div>
+<div class="rounded-2xl py-3" style="background:rgba(185,231,196,.6)"><div class="text-[10px] font-black opacity-60">TIỀN TIP</div><div class="font-black text-lg">💝${fmt(tip)}</div></div>
+<div class="rounded-2xl py-3" style="background:rgba(214,205,245,.6)"><div class="text-[10px] font-black opacity-60">ĐIỂM</div><div class="font-black text-lg">${score}/100</div></div>
+</div>
+${gotSticker?`<div class="mt-4 p-3 rounded-2xl text-center anim-pop" style="background:rgba(255,209,220,.6)"><div class="text-[11px] font-black">🎁 NHẬN ĐƯỢC STICKER MỚI!</div><div class="text-4xl mt-1">${gotSticker.e}</div><div class="font-black text-[13px]">${gotSticker.n}</div></div>`:''}
+<button class="btn btn-primary w-full mt-5" onclick="closeModal(); nextOrderOrDay();"><i class="fa-solid fa-arrow-right"></i> Đơn Tiếp Theo</button>`)}
+function failOrder(){
+if(!order||order.done)return;order.done=true;clearInterval(timerHandle);SFX.error();
+const penalty=Math.min(state.money,Math.round(order.reward*0.25));
+state.money-=penalty;state.dayStats.orders++;save();updateHUD();
+showModal('😭 Khách Bỏ Đi Rồi!',`<div class="text-center"><div class="text-6xl anim-wiggle">${order.customer.e}</div><div class="bubble inline-block mt-3 max-w-md">"Lâu quá rồi, mình đi tiệm khác đây... 😤"</div><div class="font-black mt-3 opacity-70">— ${order.customer.n}</div><div class="mt-4 text-[13px] font-black text-red-500">💸 Mất ${fmt(penalty)} tiền đền bù</div></div><button class="btn btn-primary w-full mt-5" onclick="closeModal(); nextOrderOrDay();"><i class="fa-solid fa-arrow-right"></i> Tiếp Tục</button>`)}
+function nextOrderOrDay(){if(state.dayStats.orders>=ORDERS_PER_DAY)endDay();else startNewOrder()}
+function endDay(){
+clearInterval(timerHandle);
+const s=state.dayStats;
+const avgStars=s.orders>0?(s.stars/s.orders):0;
+let grade='C';
+if(avgStars>=4.7)grade='S+';else if(avgStars>=4.2)grade='S';else if(avgStars>=3.5)grade='A';else if(avgStars>=2.8)grade='B';
+const gradeMsg={'S+':'🌟 Huyền thoại đóng gói! Khách nào cũng mê tiệm bạn!','S':'✨ Xuất sắc! Tiệm đang nổi tiếng khắp thị trấn!','A':'👍 Rất tốt! Khách hàng hài lòng!','B':'🙂 Ổn áp đó, cố thêm chút nữa nha!','C':'💪 Cố lên nào, ngày mai sẽ tốt hơn!'}[grade];
+const bonus=Math.round(s.earned*(grade==='S+'?.25:grade==='S'?.15:grade==='A'?.08:.03));
+state.money+=bonus;
+const gemBonus=grade==='S+'?3:grade==='S'?2:1;
+state.gems+=gemBonus;
+save();updateHUD();boom(1.6);SFX.win();
+showModal('🌙 Tổng Kết Ngày '+state.day,`<div class="text-center mb-4"><div class="text-7xl font-black" style="background:linear-gradient(135deg,#FFB6C1,#BEB0EE);-webkit-background-clip:text;-webkit-text-fill-color:transparent">${grade}</div><div class="text-[13px] font-bold mt-1">${gradeMsg}</div></div>
+<div class="grid grid-cols-2 gap-2 text-center">
+<div class="rounded-2xl p-3" style="background:rgba(255,233,163,.6)"><div class="text-[10px] font-black opacity-60">DOANH THU</div><div class="font-black text-lg">💰${fmt(s.earned)}</div></div>
+<div class="rounded-2xl p-3" style="background:rgba(185,231,196,.6)"><div class="text-[10px] font-black opacity-60">TIỀN TIP</div><div class="font-black text-lg">💝${fmt(s.tips)}</div></div>
+<div class="rounded-2xl p-3" style="background:rgba(214,205,245,.6)"><div class="text-[10px] font-black opacity-60">ĐƠN HOÀN THÀNH</div><div class="font-black text-lg">📦${s.orders}</div></div>
+<div class="rounded-2xl p-3" style="background:rgba(255,209,220,.6)"><div class="text-[10px] font-black opacity-60">SAO TRUNG BÌNH</div><div class="font-black text-lg">⭐${avgStars.toFixed(1)}</div></div>
+</div>
+<div class="mt-4 p-3 rounded-2xl text-center" style="background:rgba(255,249,196,.7)"><div class="text-[12px] font-black">🎁 THƯỞNG XẾP HẠNG ${grade}</div><div class="font-black text-lg mt-1">+💰${fmt(bonus)} &nbsp; +💎${gemBonus}</div></div>
+<div class="mt-4 text-[11px] font-bold opacity-60 text-center">Đơn hoàn hảo (5⭐): ${s.perfect}/${s.orders} · Cấp ${state.level} · Tổng đơn: ${state.totalOrders}</div>
+<button class="btn btn-primary w-full mt-5" onclick="closeModal(); goNextDay();"><i class="fa-solid fa-sun"></i> Bắt Đầu Ngày ${state.day+1}</button>`)}
+function goNextDay(){state.day++;state.dayStats={earned:0,tips:0,stars:0,orders:0,perfect:0};save();updateHUD();startNewOrder()}
+function showModal(t,h){$('modalTitle').innerHTML=t;$('modalBody').innerHTML=h;$('modalRoot').classList.add('show')}
+function closeModal(){$('modalRoot').classList.remove('show')}
+$('modalRoot').addEventListener('click',e=>{if(e.target.id==='modalRoot')closeModal()});
+let shopTab='items';
+function openShop(tab){shopTab=tab||shopTab;renderShop();$('modalRoot').classList.add('show');SFX.click()}
+function renderShop(){
+const tabs=[{id:'items',n:'🧸 Mặt Hàng'},{id:'tools',n:'🛠️ Dụng Cụ'},{id:'staff',n:'🐱 Nhân Viên'},{id:'decor',n:'🎨 Decor'}];
+let body=`<div class="flex gap-2 mb-4 flex-wrap">${tabs.map(t=>`<button class="btn ${shopTab===t.id?'btn-lav':'btn-ghost'}" data-shoptab="${t.id}">${t.n}</button>`).join('')}</div>`;
+if(shopTab==='items'){
+body+=`<div class="grid grid-cols-2 sm:grid-cols-3 gap-2">`;
+ITEMS.forEach(it=>{const owned=state.unlockedItems.includes(it.id);const cost=Math.round(it.val*12*(1+it.tier*.35));const canBuy=state.money>=cost;
+body+=`<div class="card p-3 flex items-center gap-2"><div class="text-3xl ${owned?'':'grayscale opacity-50'}">${it.e}</div><div class="flex-1 min-w-0"><div class="font-black text-[12px] truncate">${it.n}</div><div class="text-[10px] font-bold opacity-55">Tier ${it.tier} · giá trị ${it.val}</div>${owned?`<div class="text-[10px] font-black text-green-600 mt-1">✅ Đã mở khoá</div>`:`<button class="btn ${canBuy?'btn-butter':'btn-ghost'} text-[10px] px-2 py-1 mt-1 w-full" data-shopact="buyitem" data-id="${it.id}" ${canBuy?'':'disabled'}>🔓 ${fmt(cost)}💰</button>`}</div></div>`});
+body+=`</div>`}
+if(shopTab==='tools'){
+body+=`<div class="space-y-2">`;
+UPGRADES.forEach(u=>{const lv=state.upgrades[u.id]||0;const maxed=lv>=u.max;const cost=maxed?0:u.cost[lv];const canBuy=!maxed&&state.money>=cost;
+body+=`<div class="card p-3 flex items-center gap-3"><div class="text-3xl">${u.e}</div><div class="flex-1 min-w-0"><div class="font-black text-[13px]">${u.n}</div><div class="text-[10px] font-bold opacity-55">${u.desc}</div><div class="flex gap-1 mt-1">${Array.from({length:u.max},(_,i)=>`<span class="w-4 h-2 rounded-full" style="background:${i<lv?'#8FD9A8':'rgba(0,0,0,.12)'}"></span>`).join('')}</div></div>${maxed?`<span class="text-[11px] font-black text-green-600">MAX</span>`:`<button class="btn ${canBuy?'btn-butter':'btn-ghost'} text-[11px]" data-shopact="buyup" data-id="${u.id}" ${canBuy?'':'disabled'}>${fmt(cost)}💰</button>`}</div>`});
+body+=`</div>`}
+if(shopTab==='staff'){
+const n=state.autoPackers;const cost=400*(n+1);const canBuy=state.money>=cost&&n<6;
+body+=`<div class="card p-4 text-center mb-3"><div class="text-5xl anim-float">🐱</div><div class="font-black text-[15px] mt-2">Mèo Méo Trợ Lý</div><div class="text-[11px] font-bold opacity-60 mt-1">Tự động đóng gói khi bạn AFK — mỗi bé kiếm <b>+4💰/giây</b></div><div class="mt-3 text-[13px] font-black">Đang có: ${n} / 6 bé</div><div class="flex justify-center gap-1 mt-2 text-2xl">${Array.from({length:6},(_,i)=>`<span class="${i<n?'':'opacity-20'}">🐱</span>`).join('')}</div><button class="btn ${canBuy?'btn-primary':'btn-ghost'} w-full mt-3" data-shopact="buypacker" ${canBuy?'':'disabled'}>${n>=6?'Đã đủ đội ngũ':`Thuê thêm — ${fmt(cost)}💰`}</button>${n>0?`<div class="text-[11px] font-black text-green-600 mt-2">💵 Thu nhập thụ động: ${n*4}💰/giây</div>`:''}</div>`}
+if(shopTab==='decor'){
+body+=`<div class="grid grid-cols-1 sm:grid-cols-2 gap-2">`;
+DECORS.forEach(d=>{const owned=state.unlockedDecor.includes(d.id);const active=state.decor===d.id;const canBuy=state.money>=d.cost;
+body+=`<div class="card p-3 ${active?'ring-4 ring-pinky':''}"><div class="h-16 rounded-2xl mb-2" style="background:${d.bg}"></div><div class="font-black text-[13px]">${d.e} ${d.n}</div>${owned?(active?`<div class="text-[11px] font-black text-green-600 mt-2">✅ Đang sử dụng</div>`:`<button class="btn btn-mint w-full mt-2 text-[11px]" data-shopact="usedecor" data-id="${d.id}">Sử dụng</button>`):`<button class="btn ${canBuy?'btn-butter':'btn-ghost'} w-full mt-2 text-[11px]" data-shopact="buydecor" data-id="${d.id}" ${canBuy?'':'disabled'}>${fmt(d.cost)}💰 Mở khoá</button>`}</div>`});
+body+=`</div>`}
+body+=`<div class="mt-5 flex items-center justify-between card p-3"><div class="font-black text-[13px]">💰 Ví: ${fmt(state.money)} · 💎 ${state.gems}</div><button class="btn btn-ghost text-[11px]" onclick="renderShop()"><i class="fa-solid fa-rotate"></i> Làm mới</button></div>`;
+$('modalTitle').innerHTML='🏪 Cửa Hàng Nâng Cấp';
+$('modalBody').innerHTML=body}
+$('modalBody').addEventListener('click',e=>{
+const tabBtn=e.target.closest('[data-shoptab]');
+if(tabBtn){shopTab=tabBtn.dataset.shoptab;SFX.click();renderShop();return}
+const btn=e.target.closest('[data-shopact]');if(!btn)return;
+const act=btn.dataset.shopact,id=btn.dataset.id;
+if(act==='buyitem'){const it=ITEMS.find(x=>x.id===id);const cost=Math.round(it.val*12*(1+it.tier*.35));if(state.money<cost)return;state.money-=cost;state.unlockedItems.push(id);SFX.coin();toast(`🔓 Mở khoá ${it.n}!`)}
+if(act==='buyup'){const u=UPGRADES.find(x=>x.id===id);const lv=state.upgrades[u.id]||0;if(lv>=u.max)return;const cost=u.cost[lv];if(state.money<cost)return;state.money-=cost;state.upgrades[u.id]=lv+1;SFX.coin();toast(`⬆️ ${u.n} lên cấp ${lv+1}!`)}
+if(act==='buypacker'){const n=state.autoPackers;const cost=400*(n+1);if(state.money<cost||n>=6)return;state.money-=cost;state.autoPackers++;SFX.win();toast('🐱 Đã thuê Mèo Méo Trợ Lý!')}
+if(act==='buydecor'){const d=DECORS.find(x=>x.id===id);if(state.money<d.cost)return;state.money-=d.cost;state.unlockedDecor.push(id);state.decor=id;SFX.win();applyDecor();toast(`🎨 Mở khoá ${d.n}!`)}
+if(act==='usedecor'){state.decor=id;SFX.click();applyDecor()}
+save();updateHUD();renderShop()});
+function applyDecor(){const d=DECORS.find(x=>x.id===state.decor)||DECORS[0];document.body.style.background=d.bg;document.body.style.backgroundAttachment='fixed'}
+function openAlbum(){
+const got=state.stickers.length;
+const body=`<div class="text-center mb-4"><div class="text-[13px] font-black">Đã sưu tầm: ${got}/${STICKERS.length}</div><div class="bar mt-2"><i style="width:${(got/STICKERS.length)*100}%;background:linear-gradient(90deg,#FFB6C1,#BEB0EE)"></i></div></div><div class="grid grid-cols-3 sm:grid-cols-4 gap-2">${STICKERS.map(s=>{const owned=state.stickers.includes(s.id);return `<div class="card p-3 text-center ${owned?'':'opacity-40'}"><div class="text-4xl ${owned?'anim-float':''}">${owned?s.e:'❓'}</div><div class="text-[10px] font-black mt-2 leading-tight">${owned?s.n:'Chưa có'}</div></div>`}).join('')}</div><div class="mt-4 text-center text-[11px] font-bold opacity-60">Nhận sticker bí mật khi đạt đánh giá 5 ⭐ cho một đơn hàng!</div>`;
+showModal('📖 Sổ Tay Sưu Tầm Sticker',body);SFX.click()}
+let fpItems=[],fpSelected='🧸';
+function openFreePlay(){
+const palette=ITEMS.filter(i=>state.unlockedItems.includes(i.id));
+showModal('🎨 Chế Độ Sáng Tạo',`<div class="text-[12px] font-bold opacity-70 mb-3">Bấm chọn một món, rồi bấm vào khung tranh để đặt vào hộp. Tải về để chia sẻ nhé!</div><div class="flex gap-1.5 flex-wrap mb-3" id="fpPalette">${palette.map(it=>`<button class="item-btn px-2 py-1.5 text-2xl" data-fpitem="${it.id}" style="${fpSelected===it.id?'border-color:#FFB6C1;background:rgba(255,209,220,.5)':''}">${it.e}</button>`).join('')}</div><canvas id="fpCanvas" width="640" height="640" class="w-full rounded-3xl cursor-crosshair" style="background:linear-gradient(160deg,#FFF8F0,#FFE9F2);border:4px dashed #FFD1DC"></canvas><div class="flex gap-2 mt-3 flex-wrap"><button class="btn btn-ghost flex-1" id="fpClear"><i class="fa-solid fa-trash"></i> Xoá hết</button><button class="btn btn-butter flex-1" id="fpRandom"><i class="fa-solid fa-shuffle"></i> Ngẫu nhiên</button><button class="btn btn-primary flex-1" id="fpDownload"><i class="fa-solid fa-download"></i> Tải Ảnh</button></div>`);
+fpItems=[];drawFP();
+$('fpPalette').addEventListener('click',e=>{const b=e.target.closest('[data-fpitem]');if(!b)return;fpSelected=b.dataset.fpitem;[...$('fpPalette').children].forEach(c=>{c.style.borderColor=c.dataset.fpitem===fpSelected?'#FFB6C1':'transparent';c.style.background=c.dataset.fpitem===fpSelected?'rgba(255,209,220,.5)':''});SFX.click()});
+const cv=$('fpCanvas');
+cv.addEventListener('click',e=>{const r=cv.getBoundingClientRect();const x=(e.clientX-r.left)*(cv.width/r.width);const y=(e.clientY-r.top)*(cv.height/r.height);const meta=ITEMS.find(i=>i.id===fpSelected);fpItems.push({e:meta.e,x,y,rot:rnd(-.25,.25),size:64});SFX.pop();drawFP()});
+$('fpClear').addEventListener('click',()=>{fpItems=[];drawFP();SFX.click()});
+$('fpRandom').addEventListener('click',()=>{const p2=ITEMS.filter(i=>state.unlockedItems.includes(i.id));fpItems=[];for(let i=0;i<5+Math.floor(Math.random()*4);i++){const m=pick(p2);fpItems.push({e:m.e,x:rnd(90,550),y:rnd(90,550),rot:rnd(-.3,.3),size:rnd(50,80)})}SFX.pop();drawFP()});
+$('fpDownload').addEventListener('click',()=>{const a=document.createElement('a');a.download=`tui-qua-cute-${Date.now()}.png`;a.href=$('fpCanvas').toDataURL('image/png');a.click();SFX.coin();toast('📸 Đã tải ảnh về máy!')})}
+function drawFP(){
+const cv=$('fpCanvas');if(!cv)return;const ctx=cv.getContext('2d');const W=cv.width,H=cv.height;
+const g=ctx.createLinearGradient(0,0,W,H);g.addColorStop(0,'#FFF8F0');g.addColorStop(.5,'#FFE9F2');g.addColorStop(1,'#EAF6FF');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+ctx.save();ctx.strokeStyle='#FFB6C1';ctx.lineWidth=12;ctx.setLineDash([26,18]);roundRect(ctx,60,60,W-120,H-120,48);ctx.stroke();ctx.restore();
+ctx.save();ctx.globalAlpha=.5;ctx.fillStyle='#FFD1DC';roundRect(ctx,60,60,W-120,90,40);ctx.fill();ctx.restore();
+fpItems.forEach(it=>{ctx.save();ctx.translate(it.x,it.y);ctx.rotate(it.rot);ctx.font=`${it.size}px serif`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(it.e,0,0);ctx.restore()});
+ctx.font='54px serif';ctx.textAlign='center';ctx.fillText('🎀',W/2,105);
+ctx.font='900 26px Nunito, sans-serif';ctx.fillStyle='rgba(91,75,94,.55)';ctx.fillText('Tiệm Đóng Gói Chibi Cute 🧸',W/2,H-32)}
+function roundRect(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
+function openGuide(){
+showModal('📖 Hướng Dẫn Chơi',`<div class="space-y-3 text-[13px] font-bold leading-relaxed">
+<div class="card p-3"><div class="font-black text-[14px] mb-1">1️⃣ Nhận đơn</div>Khách hàng chibi sẽ đến với yêu cầu và thanh <b>kiên nhẫn</b>. Hết thời gian là khách bỏ đi đó!</div>
+<div class="card p-3"><div class="font-black text-[14px] mb-1">2️⃣ Chọn hộp</div>Chọn hộp đủ lớn để chứa hết món. Hộp vừa khít sẽ được điểm cao hơn.</div>
+<div class="card p-3"><div class="font-black text-[14px] mb-1">3️⃣ Xếp đồ</div>Bấm vào món trên kệ để cho vào hộp. Xếp đúng số lượng yêu cầu!</div>
+<div class="card p-3"><div class="font-black text-[14px] mb-1">4️⃣ Trang trí</div>Thêm lớp lót chống sốc, viết thiệp cảm ơn để tăng tiền tip.</div>
+<div class="card p-3"><div class="font-black text-[14px] mb-1">5️⃣ Dán băng keo & tem</div><b>Giữ và kéo ngang</b> trên thanh để dán băng keo đạt 100%. Sau đó dán tối đa 3 con tem.</div>
+<div class="card p-3"><div class="font-black text-[14px] mb-1">6️⃣ Vận đơn</div><b>Kéo</b> tấm vận đơn thả vào hộp, rồi bấm vào mã QR 3 lần để quét.</div>
+<div class="card p-3"><div class="font-black text-[14px] mb-1">7️⃣ Giao hàng</div>Chọn shipper phù hợp. Shipper xịn hơn = nhiều tip hơn nhưng tốn phí.</div>
+<div class="card p-3" style="background:rgba(255,233,163,.55)"><div class="font-black text-[14px] mb-1">⭐ Đánh giá</div>Đạt <b>5 sao</b> sẽ nhận 💎 Kim Cương và 1 <b>Sticker bí mật</b>!</div>
+<div class="card p-3" style="background:rgba(214,205,245,.55)"><div class="font-black text-[14px] mb-1">🐱 Nhân viên tự động</div>Thuê Mèo Méo Trợ Lý ở Cửa Hàng để có thu nhập thụ động khi AFK.</div>
+<div class="card p-3" style="background:rgba(185,231,196,.55)"><div class="font-black text-[14px] mb-1">💾 Tự động lưu</div>Tiến trình được lưu tự động vào trình duyệt!</div>
+</div>`);SFX.click()}
+function openSettings(){
+showModal('⚙️ Cài Đặt',`<div class="space-y-3">
+<div class="card p-4"><div class="font-black text-[14px] mb-2">🎮 Chế độ ban đêm</div><button class="btn btn-lav w-full" onclick="toggleNight()"><i class="fa-solid fa-moon"></i> Bật / Tắt Night Shift</button></div>
+<div class="card p-4"><div class="font-black text-[14px] mb-2">📤 Xuất dữ liệu</div><button class="btn btn-mint w-full" onclick="exportData()"><i class="fa-solid fa-file-export"></i> Tải file JSON</button></div>
+<div class="card p-4"><div class="font-black text-[14px] mb-2">📥 Nhập dữ liệu</div><input type="file" id="importFile" accept=".json" class="w-full text-[11px] font-bold"/></div>
+<div class="card p-4" style="background:rgba(255,209,220,.5)"><div class="font-black text-[14px] mb-2 text-red-600">⚠️ Nguy hiểm</div><button class="btn w-full" style="background:#FF8095;color:#fff" onclick="resetGame()"><i class="fa-solid fa-trash"></i> Xoá toàn bộ & chơi lại</button></div>
+<div class="text-center text-[11px] font-bold opacity-50 pt-2">🧸 Tiệm Đóng Gói & Giao Hàng Chibi Cute<br>Made with 💕 · v1.0</div></div>`);
+setTimeout(()=>{const f=$('importFile');if(f)f.addEventListener('change',ev=>{const file=ev.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=e=>{try{const d=JSON.parse(e.target.result);state=Object.assign(defaultState(),d);save();applyDecor();applyNight();updateHUD();closeModal();startNewOrder();toast('📥 Nhập dữ liệu thành công!')}catch(err){toast('❌ File không hợp lệ!')}};reader.readAsText(file)})},50)}
+function exportData(){const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`chibi-pack-save-${Date.now()}.json`;a.click();SFX.coin();toast('📤 Đã xuất dữ liệu!')}
+function resetGame(){if(!confirm('Bạn chắc chắn muốn xoá toàn bộ tiến trình và chơi lại từ đầu?'))return;localStorage.removeItem(SAVE_KEY);state=defaultState();applyDecor();applyNight();closeModal();save();startNewOrder();toast('🔄 Đã reset game!')}
+function toggleNight(){state.night=!state.night;applyNight();save();SFX.click()}
+function applyNight(){document.body.classList.toggle('night',state.night);const btn=$('nightBtn');if(btn)btn.innerHTML=state.night?'<i class="fa-solid fa-sun"></i>':'<i class="fa-solid fa-moon"></i>'}
+setInterval(()=>{if(state.autoPackers>0){const gain=state.autoPackers*4;state.money+=gain;state.dayStats.earned+=gain;updateHUD()}},1000);
+setInterval(save,8000);
+window.addEventListener('beforeunload',save);
+(function init(){
+const loaded=load();
+applyDecor();applyNight();updateHUD();
+if(loaded)toast('👋 Chào mừng trở lại tiệm!');else toast('🧸 Chào mừng đến Tiệm Đóng Gói Chibi!');
+setTimeout(()=>{if(state.dayStats.orders>=ORDERS_PER_DAY)state.dayStats={earned:0,tips:0,stars:0,orders:0,perfect:0};startNewOrder()},400);
+const unlock=()=>{ac();document.removeEventListener('pointerdown',unlock)};
+document.addEventListener('pointerdown',unlock)})();
+</script>
+</body>
+</html>
